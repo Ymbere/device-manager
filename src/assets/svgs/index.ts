@@ -7,3 +7,4 @@ export { default as ReloadIcon } from "./ReloadIcon";
 export { default as SearchIcon } from "./SearchIcon";
 export { default as WindowsIcon } from "./WindowsIcon";
 export { default as Windows } from "./Windows";
+export { default as NinjaOneLogo } from "./NinjaOneLogo";
