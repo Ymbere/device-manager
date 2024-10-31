@@ -1,19 +1,17 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 import styled from 'styled-components';
-import {SearchIcon} from "../../assets/svgs";
-import {BaseContainer} from "../../styles/common";
+import { BaseContainer } from "../../styles/common";
 
-interface SearchInputProps {
+interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder: string;
-  onChange: (value: string) => void;
-  value?: string;
+  icon?: React.ReactNode;
 }
 
-const SearchBoxContainer = styled(BaseContainer)`
+const TextBoxContainer = styled(BaseContainer)`
     display: flex;
 `
 
-const SearchBoxInput = styled.input`
+const TextBoxInput = styled.input`
     width: 100%;
     border: none;
     padding: 0;
@@ -27,19 +25,15 @@ const SearchBoxInput = styled.input`
     }
 `;
 
-const SearchInput = ({placeholder, onChange, value}: SearchInputProps) => {
-  const handleChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
-    onChange(e.target.value);
-  };
+const TextInput = ({ icon, ...props }: TextInputProps) => {
 
   return (
-      <SearchBoxContainer>
-        <SearchIcon/>
-        <SearchBoxInput data-testid='searchbox-input' onChange={handleChangeInput} placeholder={placeholder} value={value}/>
-      </SearchBoxContainer>
+    <TextBoxContainer>
+      {icon}
+      <TextBoxInput data-testid='searchbox-input' {...props} />
+    </TextBoxContainer>
   )
 
 }
 
-export default SearchInput;
+export default TextInput;
