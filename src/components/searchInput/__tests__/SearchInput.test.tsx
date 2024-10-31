@@ -1,8 +1,7 @@
-import React, { act } from 'react';
+import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SearchInput from "../index";
-
+import TextInput from "../index";
 
 
 const baseProps = {
@@ -11,7 +10,7 @@ const baseProps = {
 }
 
 test('Should render the search input without crashing', () => {
-  render(<SearchInput {...baseProps} />);
+  render(<TextInput {...baseProps} />);
   const placeholder = screen.getByPlaceholderText(baseProps.placeholder);
   expect(placeholder).toBeVisible();
 });
@@ -21,15 +20,19 @@ test('Should trigger onChange when typing', async () => {
   const user = userEvent.setup();
   baseProps.onChange = jest.fn();
 
-  render(<SearchInput {...baseProps} />);
+  render(<TextInput {...baseProps} />);
   const inputSearch = screen.getByPlaceholderText(baseProps.placeholder);
   expect(inputSearch).toBeVisible();
 
   await user.type(inputSearch, 'Teste value typed');
 
   await waitFor(() => {
-    expect(baseProps.onChange).toBeCalledWith('Teste value typed');
+    expect(baseProps.onChange).toBeCalled();
   });
+
+  // @ts-ignore
+  const event = baseProps.onChange.mock.calls[0][0];
+  expect(event.target.value).toBe('Teste value typed');
 
   // @ts-ignore
   expect(inputSearch.value).toBe('Teste value typed');
@@ -38,7 +41,7 @@ test('Should trigger onChange when typing', async () => {
 test('Should have value provided for controlled behaviour', () => {
   // @ts-ignore
   baseProps.value = 'Test controlled';
-  render(<SearchInput {...baseProps} />);
+  render(<TextInput {...baseProps} />);
 
   const inputSearch = screen.getByPlaceholderText(baseProps.placeholder);
   expect(inputSearch).toBeVisible();
