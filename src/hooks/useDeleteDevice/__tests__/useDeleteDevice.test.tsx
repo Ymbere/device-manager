@@ -2,6 +2,7 @@ import React, {ReactNode} from 'react';
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {renderHook, waitFor} from "@testing-library/react";
 import {useDeleteDevice} from "../index";
+import { BASE_API_URL } from '../../../consts';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -27,7 +28,7 @@ test('Should be able to delete device', async () => {
 
   mutate(mockDeviceIdToDelete);
 
-  await waitFor(() => expect(fetch).toHaveBeenCalledWith(`https://localhost:3001/devices/${mockDeviceIdToDelete}`, { method: 'DELETE' }));
+  await waitFor(() => expect(fetch).toHaveBeenCalledWith(`${BASE_API_URL}/devices/${mockDeviceIdToDelete}`, { method: 'DELETE' }));
 
   expect(fetch).toHaveBeenCalledTimes(1);
 

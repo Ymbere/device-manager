@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { BASE_API_URL } from '../../consts';
 
 const deleteDevice = async (deviceId: string): Promise<void> => {
-  const url = `https://localhost:3001/devices/${deviceId}`;
+  const url = `${BASE_API_URL}/devices/${deviceId}`;
   const response = await fetch(url, { method: 'DELETE'});
 
   return response.json();
