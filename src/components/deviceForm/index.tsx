@@ -1,8 +1,8 @@
 import React from 'react';
 import Dropdown from '../dropdown';
-import Input from '../searchInput';
+import Input from '../TextInput';
 import { DEVICE_TYPES } from '../../consts';
-import { StyledForm, StyledFormGroup } from './styles'
+import { StyledForm, StyledFormGroup } from './styles';
 
 interface DeviceFormProps {
   formState: {
@@ -31,7 +31,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
       <StyledFormGroup>
         <label>Device type* </label>
         <Dropdown
-          values={[
+          dropdownOptions={[
             { value: DEVICE_TYPES.MAC, text: 'Mac Os' },
             { value: DEVICE_TYPES.WINDOWS, text: 'Windows' },
             { value: DEVICE_TYPES.LINUX, text: 'Linux' }
