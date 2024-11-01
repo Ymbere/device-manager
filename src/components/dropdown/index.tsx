@@ -1,7 +1,7 @@
 import React from 'react';
-import styled from 'styled-components';
-import {ArrowDownIcon} from "../../assets/svgs";
-import {BaseContainer} from "../../styles/common";
+import { StyledDropdownWrapper, StyledDropdownHeader, StyledDropdownList, StyledDropdownListItem } from './styles';
+import { ArrowDownIcon } from '../../assets/svgs';
+import useClickOutside from '../../hooks/useClickOutside';
 
 export interface DropdownItem {
   value: string;
@@ -9,175 +9,111 @@ export interface DropdownItem {
 }
 
 interface DropdownProps {
-  values: Array<DropdownItem>
-  placeholder: string;
+  dropdownOptions: Array<DropdownItem>;
+  placeholder?: string;
+  infoLabel?: string;
   multiple?: boolean;
   onChange: (value: DropdownItem | Array<DropdownItem>) => void;
   selectedValues: Array<string>;
 }
 
-const DropdownContainer = styled(BaseContainer)`
-    display: flex;
-    justify-content: space-around;
-    gap: 16px;
-    align-items: center;
-    cursor: pointer;
-`
+interface DropdownPlaceholderProps {
+  infoLabel?: string;
+  placeholder?: string;
+  selectedValues: Array<string>;
+  dropdownOptions: Array<DropdownItem>;
+}
 
-const DropdownOptions = styled.ul`
-    border: 1px solid rgba(209, 208, 217, 1);
-    width: 100%;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+const DropdownPlaceholder = ({ infoLabel, placeholder, selectedValues, dropdownOptions }: DropdownPlaceholderProps) => {
+  const placeholderDetail = selectedValues
+    .map(selectedValue => dropdownOptions.find(dropdownOption => dropdownOption.value === selectedValue)?.text)
+    .filter(Boolean)
+    .join(', ');
 
-    li {
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin: 11px 12px 11px 12px;
-        padding: 0;
-        cursor: pointer;
+  if (infoLabel) {
+    return <span>{infoLabel} {placeholderDetail}</span>;
+  }
 
-        &:hover {
-            background-color: #f8f9fa;
-            color: #333;
-            font-weight: bold;
+  if (placeholder && !placeholderDetail) {
+    return <span>{placeholder}</span>;
+  }
 
-            &::before {
-                content: '';
-                position: absolute;
-                top: -11px;
-                left: -12px;
-                right: -12px;
-                bottom: -11px;
-                background-color: inherit;
-                z-index: -1;
-            }
-        }
-    }
-`;
+  return <span>{placeholderDetail}</span>;
+};
 
-const SimpleDropdown = ({placeholder, values, selectedValues, onChange}: DropdownProps) => {
+const SimpleDropdown = ({ placeholder, dropdownOptions, selectedValues, onChange, infoLabel }: DropdownProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
-  const selectedValue = values.find(v => v.value === selectedValues[0]);
+  useClickOutside(dropdownRef, () => setIsOpen(false));
 
   return (
-      <div>
-        <DropdownContainer
-            onClick={() => setIsOpen(!isOpen)}
-            data-testid="dropdown-container"
-        >
-          {placeholder} {selectedValue ? `${selectedValue.text}` : ''}
-          <ArrowDownIcon />
-        </DropdownContainer>
-        {isOpen && (
-            <DropdownOptions>
-              {values.map((dropdownItem) => (
-                  <li
-                      key={dropdownItem.value}
-                      value={dropdownItem.value}
-                      onClick={() => {
-                        onChange(dropdownItem);
-                        setIsOpen(false);
-                      }}
-                  >
-                    {dropdownItem.text}
-                  </li>
-              ))}
-            </DropdownOptions>
-        )}
-      </div>
-  )
-}
+    <StyledDropdownWrapper ref={dropdownRef}>
+      <StyledDropdownHeader onClick={() => setIsOpen(!isOpen)} data-testid="dropdown-container">
+        <DropdownPlaceholder infoLabel={infoLabel} placeholder={placeholder} selectedValues={selectedValues} dropdownOptions={dropdownOptions} />
+        <ArrowDownIcon />
+      </StyledDropdownHeader>
+      {isOpen && (
+        <StyledDropdownList>
+          {dropdownOptions.map(dropdownOption => (
+            <StyledDropdownListItem key={dropdownOption.value} onClick={() => { onChange(dropdownOption); setIsOpen(false); }}>
+              {dropdownOption.text}
+            </StyledDropdownListItem>
+          ))}
+        </StyledDropdownList>
+      )}
+    </StyledDropdownWrapper>
+  );
+};
 
-const MultipleDropdown = ({placeholder, values, selectedValues, onChange}: DropdownProps) => {
+const MultipleDropdown = ({ placeholder, dropdownOptions, selectedValues, onChange, infoLabel }: DropdownProps) => {
   const [isOpen, setIsOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
-  const testHandleClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>, dropdownItem: DropdownItem) => {
-    // @ts-ignore
-    if (event.target.checked) {
-      const dropdownItemOfSelectedValues = selectedValues.reduce((acc: DropdownItem[], selectedValue) => {
-        const item = values.find(v => v.value === selectedValue);
-        if (item) acc.push(item);
-        return acc;
-      }, []);
+  useClickOutside(dropdownRef, () => setIsOpen(false));
 
-      onChange([...dropdownItemOfSelectedValues, dropdownItem]);
-    } else {
-      const newSelectedValues = selectedValues.filter((selectedValue) => selectedValue !== dropdownItem.value);
+  const handleClick = (event: React.MouseEvent<HTMLInputElement>, dropdownItem: DropdownItem) => {
+    const newSelectedValues = event.currentTarget.checked
+      ? [...selectedValues, dropdownItem.value]
+      : selectedValues.filter(value => value !== dropdownItem.value);
 
-      const dropdownItemOfSelectedValues = newSelectedValues.reduce((acc: DropdownItem[], selectedValue) => {
-        const item = values.find(v => v.value === selectedValue);
-        if (item) acc.push(item);
-        return acc;
-      }, []);
-
-      onChange(dropdownItemOfSelectedValues)
-    }
-  }
-
-  const isDropdownChecked = (dropdownItem: DropdownItem) => {
-    return selectedValues.includes(dropdownItem.value);
-  }
-
-  const placeholderDetail = () => {
-    return selectedValues.reduce((acc: DropdownItem[], selectedValue) => {
-      const item = values.find(v => v.value === selectedValue);
-      if (item) acc.push(item);
-      return acc;
-    }, []).map((item) => item.text).join(', ');
-  }
+    const updatedItems = newSelectedValues.map(selectedValue => dropdownOptions.find(dropdownOption => dropdownOption.value === selectedValue)).filter(Boolean) as DropdownItem[];
+    onChange(updatedItems);
+  };
 
   return (
-      <div>
-        <DropdownContainer
-            onClick={() => setIsOpen(!isOpen)}
-            data-testid="dropdown-container"
-        >
-          {placeholder} {placeholderDetail()}
-        </DropdownContainer>
-        {isOpen && (
-            <DropdownOptions>
-              {values.map((dropdownItem) => (
-                  <li key={dropdownItem.value}>
-                    <label>
-                      <input
-                          type="checkbox"
-                          readOnly
-                          checked={isDropdownChecked(dropdownItem)}
-                          onClick={(event) => testHandleClick(event, dropdownItem)}/>{dropdownItem.text}
-                    </label>
-                  </li>
-              ))}
-            </DropdownOptions>
-        )}
-      </div>
-  )
+    <StyledDropdownWrapper ref={dropdownRef}>
+      <StyledDropdownHeader onClick={() => setIsOpen(!isOpen)} data-testid="dropdown-container">
+        <DropdownPlaceholder infoLabel={infoLabel} placeholder={placeholder} selectedValues={selectedValues} dropdownOptions={dropdownOptions} />
+        <ArrowDownIcon />
+      </StyledDropdownHeader>
+      {isOpen && (
+        <StyledDropdownList>
+          {dropdownOptions.map(dropdownItem => (
+            <StyledDropdownListItem key={dropdownItem.value}>
+              <label>
+                <input
+                  type="checkbox"
+                  readOnly
+                  checked={selectedValues.includes(dropdownItem.value)}
+                  onClick={event => handleClick(event, dropdownItem)}
+                />
+                {dropdownItem.text}
+              </label>
+            </StyledDropdownListItem>
+          ))}
+        </StyledDropdownList>
+      )}
+    </StyledDropdownWrapper>
+  );
+};
 
-}
+const Dropdown = ({ dropdownOptions, placeholder, multiple, onChange, selectedValues, infoLabel }: DropdownProps) => {
+  return multiple ? (
+    <MultipleDropdown dropdownOptions={dropdownOptions} placeholder={placeholder} onChange={onChange} selectedValues={selectedValues} infoLabel={infoLabel} />
+  ) : (
+    <SimpleDropdown dropdownOptions={dropdownOptions} placeholder={placeholder} onChange={onChange} selectedValues={selectedValues} infoLabel={infoLabel} />
+  );
+};
 
-const Dropdown = ({values, placeholder, multiple, onChange, selectedValues}: DropdownProps) => {
-  if (multiple) {
-    return <MultipleDropdown
-        values={values}
-        placeholder={placeholder}
-        multiple={multiple}
-        onChange={onChange}
-        selectedValues={selectedValues}
-    />
-  }
-
-  return <SimpleDropdown
-      values={values}
-      placeholder={placeholder}
-      onChange={onChange}
-      multiple={multiple}
-      selectedValues={selectedValues}
-  />
-}
-
-export default Dropdown
+export default Dropdown;
