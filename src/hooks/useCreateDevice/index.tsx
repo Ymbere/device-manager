@@ -1,8 +1,9 @@
 import {useMutation, useQueryClient} from '@tanstack/react-query';
 import {Device} from "../useDevices";
+import { BASE_API_URL } from '../../consts';
 
 const createDevice = async (device: Omit<Device, 'id'>): Promise<void> => {
-  const url = `https://localhost:3001/devices`;
+  const url = `${BASE_API_URL}/devices`;
   const response = await fetch(url, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

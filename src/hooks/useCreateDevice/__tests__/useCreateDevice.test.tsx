@@ -2,6 +2,7 @@ import React from 'react';
 import {renderHook, waitFor} from '@testing-library/react';
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
 import {useCreateDevice} from "../index";
+import { BASE_API_URL } from '../../../consts';
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -30,7 +31,7 @@ test('Should create the device properly', async () => {
 
   mutate(mockNewDevice)
 
-  await waitFor(() => expect(fetch).toHaveBeenCalledWith('https://localhost:3001/devices', {
+  await waitFor(() => expect(fetch).toHaveBeenCalledWith(`${BASE_API_URL}/devices`, {
     method: 'POST',
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(mockNewDevice)
