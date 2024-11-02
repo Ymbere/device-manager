@@ -1,5 +1,5 @@
-import {useQuery, UseQueryOptions} from '@tanstack/react-query';
-import {Device} from "../useDevices";
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { Device } from '../useDevices';
 import { BASE_API_URL } from '../../consts';
 
 const fetchDeviceDetail = async (deviceId: string): Promise<Device> => {
@@ -9,12 +9,12 @@ const fetchDeviceDetail = async (deviceId: string): Promise<Device> => {
   return await response.json();
 };
 
-type DeviceDetailQueryOptions = Omit<UseQueryOptions<Device>, 'queryKey'>
+type DeviceDetailQueryOptions = Omit<UseQueryOptions<Device>, 'queryKey'>;
 
 export const useDeviceDetail = (deviceId: string, options?: DeviceDetailQueryOptions) => {
   return useQuery<Device>({
     queryKey: ['device', deviceId],
     queryFn: () => fetchDeviceDetail(deviceId),
     ...options,
-  })
-}
+  });
+};
