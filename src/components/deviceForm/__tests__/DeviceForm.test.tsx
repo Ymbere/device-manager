@@ -16,10 +16,29 @@ const initialFormState = {
   hdd_capacity: '',
 };
 
+const initialFormErrors = {
+  system_name: '',
+  type: '',
+  hdd_capacity: '',
+}
+
 const filledFormState = {
   system_name: 'Test Device',
   type: DEVICE_TYPES.MAC,
   hdd_capacity: '500',
+};
+
+const renderDeviceForm = (formState) => {
+  return render(
+    <ThemeProvider theme={theme}>
+      <DeviceForm
+        formState={formState}
+        handleChange={mockHandleChange}
+        handleDropdownChange={mockHandleDropdownChange}
+        formErrors={initialFormErrors}
+      />
+    </ThemeProvider>
+  );
 };
 
 describe('DeviceForm', () => {
@@ -28,15 +47,7 @@ describe('DeviceForm', () => {
   });
 
   it('renders the form with initial state', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <DeviceForm
-          formState={initialFormState}
-          handleChange={mockHandleChange}
-          handleDropdownChange={mockHandleDropdownChange}
-        />
-      </ThemeProvider>
-    );
+    renderDeviceForm(initialFormState);
 
     expect(screen.getByLabelText(/System name/i)).toHaveValue('');
     expect(screen.getByText(/Select device type/i)).toBeInTheDocument();
@@ -44,15 +55,7 @@ describe('DeviceForm', () => {
   });
 
   it('renders the form with filled state', () => {
-    render(
-      <ThemeProvider theme={theme}>
-        <DeviceForm
-          formState={filledFormState}
-          handleChange={mockHandleChange}
-          handleDropdownChange={mockHandleDropdownChange}
-        />
-      </ThemeProvider>
-    );
+    renderDeviceForm(filledFormState);
 
     expect(screen.getByLabelText(/System name/i)).toHaveValue('Test Device');
     expect(screen.getByText(/Mac Os/i)).toBeInTheDocument();
@@ -62,15 +65,7 @@ describe('DeviceForm', () => {
   it('calls handleChange on input change', async () => {
     const user = userEvent.setup();
 
-    render(
-      <ThemeProvider theme={theme}>
-        <DeviceForm
-          formState={initialFormState}
-          handleChange={mockHandleChange}
-          handleDropdownChange={mockHandleDropdownChange}
-        />
-      </ThemeProvider>
-    );
+    renderDeviceForm(initialFormState);
 
     await user.type(screen.getByLabelText(/System name/i), 'New Device');
 
@@ -89,15 +84,7 @@ describe('DeviceForm', () => {
   it('calls handleDropdownChange on dropdown change', async () => {
     const user = userEvent.setup();
 
-    render(
-      <ThemeProvider theme={theme}>
-        <DeviceForm
-          formState={initialFormState}
-          handleChange={mockHandleChange}
-          handleDropdownChange={mockHandleDropdownChange}
-        />
-      </ThemeProvider>
-    );
+    renderDeviceForm(initialFormState);
 
     act(() => {
       user.click(screen.getByTestId('dropdown-container'));
