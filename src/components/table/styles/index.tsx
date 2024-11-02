@@ -60,10 +60,15 @@ export const StyledContextMenu = styled.div`
     padding: 4px;
     position: absolute;
     right: 0;
-    top: 12px;
-    z-index: 1000;
+    width: 120px;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: #FFFFFF;
 
     button {
+        height: 30px;
         background: none;
         border: none;
     }
