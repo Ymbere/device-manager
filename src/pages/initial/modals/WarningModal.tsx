@@ -12,7 +12,7 @@ interface WarningModalProps {
 
 const WarningModal = ({ isOpen, deviceId, onClose }: WarningModalProps) => {
   const { mutateAsync: deleteDevice } = useDeleteDevice();
-  const { data: deviceToDelete } = useDeviceDetail(deviceId);
+  const { data: deviceToDelete } = useDeviceDetail(deviceId, { enabled: isOpen ? !!deviceId : false});
 
   const handleDelete = async () => {
     if (deviceId) {

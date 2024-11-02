@@ -11,7 +11,7 @@ interface DeviceModalProps {
 }
 
 const DeviceModal = ({ isOpen, deviceId, onClose }: DeviceModalProps) => {
-  const { formState, handleChange, handleDropdownChange, handleSubmit } = useDeviceForm(deviceId);
+  const { formState, handleChange, handleDropdownChange, handleSubmit } = useDeviceForm(isOpen ? deviceId : null);
 
   const handleFormSubmit = async () => {
     const result = await handleSubmit();
