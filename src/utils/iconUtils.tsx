@@ -1,5 +1,5 @@
-import { LinuxIcon, WindowsIcon, MacIcon } from "../assets/svgs";
-import { DEVICE_TYPES } from "../consts";
+import { LinuxIcon, WindowsIcon, MacIcon } from '../assets/svgs';
+import { DEVICE_TYPES } from '../consts';
 
 export const getIconBasedOnSystem = (system: string) => {
   const keyValues: Array<[string, React.ReactElement]> = [
