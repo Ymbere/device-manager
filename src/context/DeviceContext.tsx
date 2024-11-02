@@ -11,6 +11,7 @@ interface DeviceContextType {
     handleSearchFilterChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleChangeDeviceSortingFilter: (selectedValue: DropdownItem | DropdownItem[]) => void;
     handleChangeDeviceTypeFilter: (selectedValues: DropdownItem | DropdownItem[]) => void;
+    clearFilters: () => void;
 }
 
 const DeviceContext = React.createContext<DeviceContextType | undefined>(undefined);
@@ -20,17 +21,23 @@ interface DeviceProviderProps {
 }
 
 export const DeviceProvider = ({ children }: DeviceProviderProps) => {
-    const { data: devices } = useDevices();
+    const { data: devices, refetch } = useDevices();
 
     const {
         filteredDevicesList,
         filters,
         handleSearchFilterChange,
         handleChangeDeviceSortingFilter,
-        handleChangeDeviceTypeFilter
+        handleChangeDeviceTypeFilter,
+        clearFilters: clearDeviceFilters,
     } = useDeviceFilters(devices ?? []);
 
     const tableRows = useTableRows(filteredDevicesList);
+
+    const clearFilters = () => {
+        clearDeviceFilters();
+        refetch();
+    };
 
     return (
         <DeviceContext.Provider
@@ -39,7 +46,8 @@ export const DeviceProvider = ({ children }: DeviceProviderProps) => {
                 filters,
                 handleSearchFilterChange,
                 handleChangeDeviceSortingFilter,
-                handleChangeDeviceTypeFilter
+                handleChangeDeviceTypeFilter,
+                clearFilters,
             }}
         >
             {children}

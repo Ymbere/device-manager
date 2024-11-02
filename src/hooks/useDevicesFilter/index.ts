@@ -17,10 +17,15 @@ interface SetDeviceSearchFilterAction {
     payload: string;
 }
 
+interface ClearFiltersAction{
+    type: 'CLEAR_FILTERS';
+}
+
 type FiltersAction =
     | SetDeviceTypeFilterAction
     | SetDeviceSortingFilterAction
-    | SetDeviceSearchFilterAction;
+    | SetDeviceSearchFilterAction
+    | ClearFiltersAction;
 
 export interface FiltersState {
     deviceTypeFilter: string[];
@@ -42,6 +47,8 @@ const filtersReducer = (state: FiltersState, action: FiltersAction): FiltersStat
             return { ...state, deviceSortingFilter: action.payload };
         case 'SET_DEVICE_SEARCH_FILTER':
             return { ...state, deviceSearchFilter: action.payload };
+        case 'CLEAR_FILTERS':
+            return initialState;
         default:
             return state;
     }
@@ -65,6 +72,10 @@ export const useDeviceFilters = (devices: Device[]) => {
 
     const handleSearchFilterChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch({ type: 'SET_DEVICE_SEARCH_FILTER', payload: event.target.value });
+    };
+
+    const clearFilters = () => {
+        dispatch({ type: 'CLEAR_FILTERS' });
     };
 
     const filteredDevicesList = useMemo(() => {
@@ -103,6 +114,7 @@ export const useDeviceFilters = (devices: Device[]) => {
         handleChangeDeviceTypeFilter,
         handleChangeDeviceSortingFilter,
         handleSearchFilterChange,
+        clearFilters,
         filteredDevicesList
     };
 };
