@@ -2,8 +2,9 @@ import React from 'react';
 import Dropdown from '../dropdown';
 import Input from '../TextInput';
 import { DEVICE_TYPES } from '../../consts';
-import { StyledForm, StyledFormGroup } from './styles';
+import { StyledForm, StyledFormError, StyledFormGroup } from './styles';
 import { FormLabelText } from '../../styles/common';
+import { FormErrors } from '../../hooks/useDeviceForm';
 
 interface DeviceFormProps {
   formState: {
@@ -11,11 +12,12 @@ interface DeviceFormProps {
     type: string;
     hdd_capacity: string;
   };
+  formErrors: FormErrors;
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   handleDropdownChange: (selectedValues: any) => void;
 }
 
-const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFormProps) => {
+const DeviceForm = ({ formState, handleChange, handleDropdownChange, formErrors }: DeviceFormProps) => {
   return (
     <StyledForm>
       <StyledFormGroup>
@@ -28,6 +30,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
           onChange={handleChange}
           required
         />
+        <StyledFormError>{formErrors.system_name}</StyledFormError>
       </StyledFormGroup>
       <StyledFormGroup>
         <FormLabelText>Device type* </FormLabelText>
@@ -41,6 +44,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
           selectedValues={[formState.type]}
           onChange={handleDropdownChange}
         />
+        <StyledFormError>{formErrors.type}</StyledFormError>
       </StyledFormGroup>
       <StyledFormGroup>
         <FormLabelText htmlFor="hdd_capacity">HDD Capacity (GB)* </FormLabelText>
@@ -52,6 +56,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
           onChange={handleChange}
           required
         />
+        <StyledFormError>{formErrors.hdd_capacity}</StyledFormError>
       </StyledFormGroup>
     </StyledForm>
   );

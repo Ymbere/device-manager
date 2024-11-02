@@ -11,3 +11,7 @@ export const StyledFormGroup = styled.div`
   flex-direction: column;
   gap: ${({ theme }) => theme.spacing.small};
 `;
+
+export const StyledFormError = styled.span`
+  color: ${({ theme }) => theme.colors.danger};
+`;

@@ -79,7 +79,7 @@ describe('useDeviceForm', () => {
     expect(createDevice).toHaveBeenCalledWith(mockDeviceDetail);
   });
 
-  it('should return error if required fields are missing on handleSubmit', async () => {
+  it('should return formInvalid if required fields are missing on handleSubmit', async () => {
     const { result } = renderHook(() => useDeviceForm());
     act(() => {
       result.current.handleChange({
@@ -94,8 +94,12 @@ describe('useDeviceForm', () => {
     });
     const response = await result.current.handleSubmit();
     expect(response).toEqual({
-      status: 'error',
-      message: 'Please fill in all required fields.',
+      status: 'formInvalid',
+      errors: {
+        system_name: 'System name is required.',
+        type: '',
+        hdd_capacity: '',
+      },
     });
   });
 });

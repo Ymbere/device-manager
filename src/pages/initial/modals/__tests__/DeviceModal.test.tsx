@@ -71,6 +71,7 @@ describe('DeviceModal', () => {
 
   it('calls handleSubmit and onClose when Submit button is clicked and submission is successful', async () => {
     const user = userEvent.setup();
+    const mockHandleSubmit = jest.fn().mockResolvedValue({ status: 'success' });
 
     renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
 
@@ -93,8 +94,7 @@ describe('DeviceModal', () => {
     });
   });
 
-  it('shows alert when submission fails', async () => {
-    window.alert = jest.fn();
+  it('shows form errors when submission fails due to validation errors', async () => {
     const user = userEvent.setup();
 
     renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
@@ -104,7 +104,7 @@ describe('DeviceModal', () => {
     });
 
     await waitFor(() => {
-      expect(window.alert).toHaveBeenCalledWith('Please fill in all required fields.');
+      expect(screen.getByText('System name is required.')).toBeInTheDocument();
     });
   });
 });
