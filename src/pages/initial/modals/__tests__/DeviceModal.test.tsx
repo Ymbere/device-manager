@@ -7,103 +7,104 @@ import DeviceModal from '../DeviceModal';
 import { theme } from '../../../../styles/theme';
 
 describe('DeviceModal', () => {
-    const onCloseMock = jest.fn();
-    const queryClient = new QueryClient();
+  const onCloseMock = jest.fn();
+  const queryClient = new QueryClient();
 
-    const renderWithProviders = (ui: React.ReactNode) => {
-        return render(
-            <QueryClientProvider client={queryClient}>
-                <ThemeProvider theme={theme}>
-                    {ui}
-                </ThemeProvider>
-            </QueryClientProvider>
-        );
+  const renderWithProviders = (ui: React.ReactNode) => {
+    return render(
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>{ui}</ThemeProvider>
+      </QueryClientProvider>
+    );
+  };
+
+  beforeEach(() => {
+    const mockDeviceDetail = {
+      id: '1',
+      system_name: 'Device 1',
+      type: 'Type A',
+      hdd_capacity: '500',
     };
 
-    beforeEach(() => {
-        const mockDeviceDetail = {
-            id: '1', system_name: 'Device 1', type: 'Type A', hdd_capacity: '500'
-        };
+    global.fetch = jest.fn(() =>
+      Promise.resolve({
+        json: () => Promise.resolve(mockDeviceDetail),
+      })
+    ) as jest.Mock;
+  });
 
-        global.fetch = jest.fn(() =>
-            Promise.resolve({
-                json: () => Promise.resolve(mockDeviceDetail),
-            })
-        ) as jest.Mock;
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
+  it('renders correctly when creating a device', async () => {
+    renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Create device')).toBeInTheDocument();
     });
 
-    afterEach(() => {
-        jest.resetAllMocks();
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
+    expect(screen.getByText('Submit')).toBeInTheDocument();
+  });
+
+  it('renders correctly when editing a device', () => {
+    renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
+
+    expect(screen.getByText('Edit device')).toBeInTheDocument();
+    expect(screen.getByText('Cancel')).toBeInTheDocument();
+    expect(screen.getByText('Submit')).toBeInTheDocument();
+  });
+
+  it('calls onClose when Cancel button is clicked', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
+
+    await act(async () => {
+      await user.click(screen.getByText('Cancel'));
     });
 
-    it('renders correctly when creating a device', async () => {
-        renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
-        
-        await waitFor(() => {
-            expect(screen.getByText('Create device')).toBeInTheDocument();
-        });
+    await waitFor(() => {
+      expect(onCloseMock).toHaveBeenCalled();
+    });
+  });
 
-        expect(screen.getByText('Cancel')).toBeInTheDocument();
-        expect(screen.getByText('Submit')).toBeInTheDocument();
+  it('calls handleSubmit and onClose when Submit button is clicked and submission is successful', async () => {
+    const user = userEvent.setup();
+
+    renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Edit device')).toBeVisible();
     });
 
-    it('renders correctly when editing a device', () => {
-        renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
-        
-        expect(screen.getByText('Edit device')).toBeInTheDocument();
-        expect(screen.getByText('Cancel')).toBeInTheDocument();
-        expect(screen.getByText('Submit')).toBeInTheDocument();
+    const systemNameInput = screen.getByLabelText(/System name/i);
+
+    await waitFor(() => {
+      expect(systemNameInput).toHaveValue('Device 1');
     });
 
-    it('calls onClose when Cancel button is clicked', async () => {
-        const user = userEvent.setup();
-        renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
-        
-        await act(async () => {
-            await user.click(screen.getByText('Cancel'));
-        });
-
-        await waitFor(() => {
-            expect(onCloseMock).toHaveBeenCalled();
-        });
+    await act(async () => {
+      await user.click(screen.getByText('Submit'));
     });
 
-    it('calls handleSubmit and onClose when Submit button is clicked and submission is successful', async () => {
-        const user = userEvent.setup();
+    await waitFor(() => {
+      expect(onCloseMock).toHaveBeenCalled();
+    });
+  });
 
-        renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
+  it('shows alert when submission fails', async () => {
+    window.alert = jest.fn();
+    const user = userEvent.setup();
 
-        await waitFor(() => {
-            expect(screen.getByText('Edit device')).toBeVisible();
-        });
+    renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
 
-        const systemNameInput = screen.getByLabelText(/System name/i);
-
-        await waitFor(() => {
-            expect(systemNameInput).toHaveValue('Device 1');
-        });
-
-        await act(async () => {
-            await user.click(screen.getByText('Submit'));
-        });
-
-        await waitFor(() => {
-            expect(onCloseMock).toHaveBeenCalled();
-        });
+    await act(async () => {
+      await user.click(screen.getByText('Submit'));
     });
 
-    it('shows alert when submission fails', async () => {
-        window.alert = jest.fn();
-        const user = userEvent.setup();
-
-        renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
-        
-        await act(async () => {
-            await user.click(screen.getByText('Submit'));
-        });
-
-        await waitFor(() => {
-            expect(window.alert).toHaveBeenCalledWith('Please fill in all required fields.');
-        });
+    await waitFor(() => {
+      expect(window.alert).toHaveBeenCalledWith('Please fill in all required fields.');
     });
+  });
 });
