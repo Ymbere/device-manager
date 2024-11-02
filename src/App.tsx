@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import InitialPage from "./pages/initial";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import InitialPage from './pages/initial';
 import { DeviceProvider } from './context/DeviceContext';
 import NinjaHeader from './components/ninjaHeader';
 import { ThemeProvider } from 'styled-components';
