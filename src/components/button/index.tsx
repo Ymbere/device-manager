@@ -8,7 +8,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const ButtonComponent = ({ buttonLabel, buttonType, onClick, iconLeft }: ButtonProps) => {
   return (
-    <Button onClick={onClick} buttonType={buttonType}>
+    <Button onClick={onClick} $buttonType={buttonType}>
       {iconLeft}
       {buttonLabel}
     </Button>

@@ -7,7 +7,7 @@ export const BaseContainer = styled.div`
 `;
 
 export const Button = styled.button<{
-  buttonType: 'primary' | 'secondary' | 'danger' | 'accessory';
+  $buttonType: 'primary' | 'secondary' | 'danger' | 'accessory';
 }>`
   border: 1px solid transparent;
   border-radius: ${({ theme }) => theme.borderRadius};
@@ -19,30 +19,30 @@ export const Button = styled.button<{
   color: ${({ theme }) => theme.colors.secondary};
   cursor: pointer;
 
-  ${({ buttonType, theme }) =>
-    buttonType === 'primary' &&
+  ${({ $buttonType, theme }) =>
+    $buttonType === 'primary' &&
     `
     background: ${theme.colors.primary};
     color: ${theme.colors.secondary};
   `}
 
-  ${({ buttonType, theme }) =>
-    buttonType === 'secondary' &&
+  ${({ $buttonType, theme }) =>
+    $buttonType === 'secondary' &&
     `
     background: ${theme.colors.secondary};
     color: ${theme.colors.primary};
     border: 1px solid ${theme.colors.border};
   `}
 
-  ${({ buttonType, theme }) =>
-    buttonType === 'danger' &&
+  ${({ $buttonType, theme }) =>
+    $buttonType === 'danger' &&
     `
     background: ${theme.colors.danger};
     color: ${theme.colors.secondary};
   `}
 
-  ${({ buttonType, theme }) =>
-    buttonType === 'accessory' &&
+  ${({ $buttonType, theme }) =>
+    $buttonType === 'accessory' &&
     `
     background: ${theme.colors.accessory};
     color: ${theme.colors.textPrimary};
