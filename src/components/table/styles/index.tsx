@@ -66,6 +66,8 @@ export const StyledContextMenuButton = styled.button`
   cursor: pointer;
   background: none;
   border: none;
+  width: 100%;
+  text-align: justify;
   color: ${({ color, theme }) => (color === 'danger' ? theme.colors.danger : theme.colors.textPrimary)};
 `;
 

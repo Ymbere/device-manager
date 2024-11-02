@@ -44,23 +44,25 @@ const CellActionButton = ({ title, id }: { title: TableRowData['title']; id: Tab
   };
 
   return (
-    <StyledActionContainer>
-      <StyledEllipsisButton data-testid={`action-${title}`} onClick={(event) => toggleActionMenu(event)}>
-        <EllipsisIcon />
-      </StyledEllipsisButton>
-      {isActionOpen && (
-        <StyledContextMenu ref={contextMenuRef}>
-          <StyledContextMenuButton onClick={() => setIsDeviceModalOpen(true)}>
-            <ContextMenuText>Edit</ContextMenuText>
-          </StyledContextMenuButton>
-          <StyledContextMenuButton color="danger" onClick={() => setIsDeleteDeviceModalOpen(true)}>
-            <ContextMenuText>Delete</ContextMenuText>
-          </StyledContextMenuButton>
-        </StyledContextMenu>
-      )}
+    <>
+      <StyledActionContainer data-testid={`action-${title}`} onClick={(event) => toggleActionMenu(event)}>
+        <StyledEllipsisButton>
+          <EllipsisIcon />
+        </StyledEllipsisButton>
+        {isActionOpen && (
+          <StyledContextMenu ref={contextMenuRef}>
+            <StyledContextMenuButton onClick={() => setIsDeviceModalOpen(true)}>
+              <ContextMenuText>Edit</ContextMenuText>
+            </StyledContextMenuButton>
+            <StyledContextMenuButton color="danger" onClick={() => setIsDeleteDeviceModalOpen(true)}>
+              <ContextMenuText>Delete</ContextMenuText>
+            </StyledContextMenuButton>
+          </StyledContextMenu>
+        )}
+      </StyledActionContainer>
       <DeviceModal deviceId={id} isOpen={isDeviceModalOpen} onClose={() => setIsDeviceModalOpen(false)} />
       <WarningModal deviceId={id} isOpen={isDeleteDeviceModalOpen} onClose={() => setIsDeleteDeviceModalOpen(false)} />
-    </StyledActionContainer>
+    </>
   );
 };
 
