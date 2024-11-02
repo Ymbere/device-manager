@@ -1,137 +1,117 @@
 import React from "react";
-import styled from 'styled-components';
-import {EllipsisIcon} from "../../assets/svgs";
+import { EllipsisIcon } from "../../assets/svgs";
+import DeviceModal from "../../pages/initial/modals/DeviceModal";
+import WarningModal from "../../pages/initial/modals/WarningModal";
+import { 
+  StyledContextMenu, 
+  StyledTable, 
+  StyledTableCell, 
+  StyledTableHeader, 
+  StyledTableRow, 
+  StyledTableCellTitle, 
+  StyledTableCellTitleContainer, 
+  StyledEllipsisButton, 
+  StyledContextMenuButton, 
+  StyledActionContainer 
+} from './styles';
+import useClickOutside from "../../hooks/useClickOutside";
+import { ContextMenuText, TableCellDescriptionText, TableCellText, TableHeaderText } from "../../styles/common";
 
-interface TableRow {
+export interface TableRowData {
+  id: string;
   title: string;
   description: string;
   icon: React.ReactNode;
-  rowMenu: Array<{
-    text: string;
-    color: string;
-    onClick: () => void;
-  }>
 }
 
-interface TableProps {
+export interface TableProps {
   headerTitle: string;
-  tableData: Array<TableRow>
+  tableData: Array<TableRowData>;
 }
 
-const TableContainer = styled.table`
-    width: 100%;
-`
-
-const TableHeaderContainer = styled.th`
-    text-align: left;
-    border-bottom: 1px solid rgba(203, 207, 211, 1);
-    padding: 12px 7px
-`
-
-const TableDataContainer = styled.td`
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-    align-items: start;
-    padding: 12px 9px;
-    border-bottom: 1px solid rgba(203, 207, 211, 1);
-`
-
-const TableDataTitleContainer = styled.div`
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-`
-
-const TableDataTitle = styled.div`
-    display: flex;
-    justify-content: space-between;
-    gap: 4px;
-    align-items: center;
-`
-
-const ContextMenuContainer = styled.div`
-    position: absolute;
-    padding: 5px;
-    z-index: 1000;
-    box-shadow: 0px 2px 4px 0px rgba(33, 31, 51, 0.15);
-
-    button {
-        border: none;
-        background: none;
-    }
-`
-
-const RenderCellActionButton = ({rowMenu, title}: { rowMenu: TableRow['rowMenu'], title: TableRow['title'] }) => {
+const CellActionButton = ({ title, id }: { title: TableRowData['title'], id: TableRowData['id'] }) => {
   const [isActionOpen, setIsActionOpen] = React.useState(false);
-  const [menuPosition, setMenuPosition] = React.useState({x: 0, y: 0});
+  const [isDeviceModalOpen, setIsDeviceModalOpen] = React.useState(false);
+  const [isDeleteDeviceModalOpen, setIsDeleteDeviceModalOpen] = React.useState(false);
 
-  const testClick = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  const contextMenuRef = React.useRef<HTMLDivElement>(null);
+
+  useClickOutside(contextMenuRef, () => setIsActionOpen(false));
+
+  const toggleActionMenu = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     event.preventDefault();
     setIsActionOpen(!isActionOpen);
-    setMenuPosition({
-      x: event.clientX - 55,
-      y: event.clientY + 10,
-    });
-  }
+  };
 
-  if (rowMenu.length > 0) {
-    return (
-        <>
-          <EllipsisIcon data-testid={`action-${title}`} onClick={(event) => testClick(event)}/>
-          {isActionOpen && (
-              <ContextMenuContainer
-                  style={{
-                    left: `${menuPosition.x}px`,
-                    top: `${menuPosition.y}px`
-                  }}
-              >
-                {rowMenu.map((menu) => (
-                    <button style={{ color: menu.color }} onClick={menu.onClick}>
-                      {menu.text}
-                    </button>
-                ))}
-              </ContextMenuContainer>
-          )}
-        </>
-    )
-  }
-
-  return null;
-}
-
-const TableCell = ({description, title, icon, rowMenu}: TableRow) => {
   return (
-      <tr>
-        <TableDataContainer>
-          <TableDataTitleContainer>
-            <TableDataTitle
-                data-testid={title}
-            >
-              {icon}
-              {title}
-            </TableDataTitle>
-            <RenderCellActionButton title={title} rowMenu={rowMenu}/>
-          </TableDataTitleContainer>
-          <div>
-            {description}
-          </div>
-        </TableDataContainer>
-      </tr>
-  )
+    <StyledActionContainer>
+      <StyledEllipsisButton data-testid={`action-${title}`} onClick={(event) => toggleActionMenu(event)}>
+        <EllipsisIcon />
+      </StyledEllipsisButton>
+      {isActionOpen && (
+        <StyledContextMenu ref={contextMenuRef}>
+          <StyledContextMenuButton onClick={() => setIsDeviceModalOpen(true)}>
+            <ContextMenuText>
+              Edit
+            </ContextMenuText>
+          </StyledContextMenuButton>
+          <StyledContextMenuButton color="danger" onClick={() => setIsDeleteDeviceModalOpen(true)}>
+            <ContextMenuText>
+              Delete
+            </ContextMenuText>
+          </StyledContextMenuButton>
+        </StyledContextMenu>
+      )}
+      <DeviceModal
+        deviceId={id}
+        isOpen={isDeviceModalOpen}
+        onClose={() => setIsDeviceModalOpen(false)}
+      />
+      <WarningModal
+        deviceId={id}
+        isOpen={isDeleteDeviceModalOpen}
+        onClose={() => setIsDeleteDeviceModalOpen(false)}
+      />
+    </StyledActionContainer>
+  );
 };
 
-const Table = ({headerTitle, tableData}: TableProps) => {
+const TableCellComponent = ({ description, title, icon, id }: TableRowData) => {
   return (
-      <TableContainer>
-        <tr>
-          <TableHeaderContainer>{headerTitle}</TableHeaderContainer>
-        </tr>
-        {tableData.map((data) => (
-            <TableCell key={data.description} {...data} />
-        ))}
-      </TableContainer>
-  )
-}
+    <StyledTableRow>
+      <StyledTableCell>
+        <StyledTableCellTitleContainer>
+          <StyledTableCellTitle data-testid={title}>
+            {icon}
+            <TableCellText>{title}</TableCellText>
+          </StyledTableCellTitle>
+          <CellActionButton title={title} id={id} />
+        </StyledTableCellTitleContainer>
+        <TableCellDescriptionText>{description}</TableCellDescriptionText>
+      </StyledTableCell>
+    </StyledTableRow>
+  );
+};
 
-export default Table;
+const TableComponent = ({ headerTitle, tableData }: TableProps) => {
+  return (
+    <StyledTable>
+      <thead>
+        <tr>
+          <StyledTableHeader>
+            <TableHeaderText>
+              {headerTitle}
+            </TableHeaderText>
+          </StyledTableHeader>
+        </tr>
+      </thead>
+      <tbody>
+        {tableData.map((data) => (
+          <TableCellComponent key={data.id} {...data} />
+        ))}
+      </tbody>
+    </StyledTable>
+  );
+};
+
+export default TableComponent;

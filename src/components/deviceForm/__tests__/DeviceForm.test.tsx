@@ -2,8 +2,10 @@ import React, { act } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/extend-expect';
+import { ThemeProvider } from 'styled-components';
 import { DEVICE_TYPES } from '../../../consts';
 import DeviceForm from '..';
+import { theme } from '../../../styles/theme';
 
 const mockHandleChange = jest.fn();
 const mockHandleDropdownChange = jest.fn();
@@ -27,11 +29,13 @@ describe('DeviceForm', () => {
 
     it('renders the form with initial state', () => {
         render(
-            <DeviceForm
-                formState={initialFormState}
-                handleChange={mockHandleChange}
-                handleDropdownChange={mockHandleDropdownChange}
-            />
+            <ThemeProvider theme={theme}>
+                <DeviceForm
+                    formState={initialFormState}
+                    handleChange={mockHandleChange}
+                    handleDropdownChange={mockHandleDropdownChange}
+                />
+            </ThemeProvider>
         );
 
         expect(screen.getByLabelText(/System name/i)).toHaveValue('');
@@ -41,11 +45,13 @@ describe('DeviceForm', () => {
 
     it('renders the form with filled state', () => {
         render(
-            <DeviceForm
-                formState={filledFormState}
-                handleChange={mockHandleChange}
-                handleDropdownChange={mockHandleDropdownChange}
-            />
+            <ThemeProvider theme={theme}>
+                <DeviceForm
+                    formState={filledFormState}
+                    handleChange={mockHandleChange}
+                    handleDropdownChange={mockHandleDropdownChange}
+                />
+            </ThemeProvider>
         );
 
         expect(screen.getByLabelText(/System name/i)).toHaveValue('Test Device');
@@ -57,11 +63,13 @@ describe('DeviceForm', () => {
         const user = userEvent.setup();
 
         render(
-            <DeviceForm
-                formState={initialFormState}
-                handleChange={mockHandleChange}
-                handleDropdownChange={mockHandleDropdownChange}
-            />
+            <ThemeProvider theme={theme}>
+                <DeviceForm
+                    formState={initialFormState}
+                    handleChange={mockHandleChange}
+                    handleDropdownChange={mockHandleDropdownChange}
+                />
+            </ThemeProvider>
         );
 
         await user.type(screen.getByLabelText(/System name/i), 'New Device');
@@ -82,11 +90,13 @@ describe('DeviceForm', () => {
         const user = userEvent.setup();
 
         render(
-            <DeviceForm
-                formState={initialFormState}
-                handleChange={mockHandleChange}
-                handleDropdownChange={mockHandleDropdownChange}
-            />
+            <ThemeProvider theme={theme}>
+                <DeviceForm
+                    formState={initialFormState}
+                    handleChange={mockHandleChange}
+                    handleDropdownChange={mockHandleDropdownChange}
+                />
+            </ThemeProvider>
         );
 
         act(() => {
