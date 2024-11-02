@@ -9,5 +9,5 @@ export const Header = styled.header`
 `;
 
 export const Logo = styled(NinjaOneLogo)`
-    margin-left: 24px;
+    mmargin-left: ${({ theme }) => theme.spacing.xlarge};
 `;

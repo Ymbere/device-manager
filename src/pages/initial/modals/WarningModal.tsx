@@ -2,6 +2,7 @@ import Modal from "../../../components/modal"
 import Button from "../../../components/button"
 import { useDeleteDevice } from "../../../hooks/useDeleteDevice";
 import { useDeviceDetail } from "../../../hooks/useDeviceDetail";
+import { ModalButtonText, ModalHeaderText } from "../../../styles/common";
 
 interface WarningModalProps {
     isOpen: boolean;
@@ -22,18 +23,18 @@ const WarningModal = ({ isOpen, deviceId, onClose }: WarningModalProps) => {
 
     return (
         <Modal
-            modalTitle="Delete device?"
+            modalTitle={(<ModalHeaderText>Delete device?</ModalHeaderText>)}
             isOpen={isOpen}
             onClose={onClose}
             actions={(
                 <>
                     <Button
-                        buttonLabel="Cancel"
+                        buttonLabel={(<ModalButtonText>Cancel</ModalButtonText>)}
                         onClick={() => onClose()}
-                        buttonType='secondary'
+                        buttonType='accessory'
                     />
                     <Button
-                        buttonLabel="Delete"
+                        buttonLabel={(<ModalButtonText>Delete</ModalButtonText>)}
                         onClick={() => handleDelete()}
                         buttonType='danger'
                     />

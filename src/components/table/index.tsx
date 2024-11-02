@@ -8,7 +8,6 @@ import {
   StyledTableCell, 
   StyledTableHeader, 
   StyledTableRow, 
-  StyledTableCellDescription, 
   StyledTableCellTitle, 
   StyledTableCellTitleContainer, 
   StyledEllipsisButton, 
@@ -16,6 +15,7 @@ import {
   StyledActionContainer 
 } from './styles';
 import useClickOutside from "../../hooks/useClickOutside";
+import { ContextMenuText, TableCellDescriptionText, TableCellText, TableHeaderText } from "../../styles/common";
 
 export interface TableRowData {
   id: string;
@@ -51,10 +51,14 @@ const CellActionButton = ({ title, id }: { title: TableRowData['title'], id: Tab
       {isActionOpen && (
         <StyledContextMenu ref={contextMenuRef}>
           <StyledContextMenuButton onClick={() => setIsDeviceModalOpen(true)}>
-            Edit
+            <ContextMenuText>
+              Edit
+            </ContextMenuText>
           </StyledContextMenuButton>
-          <StyledContextMenuButton color="red" onClick={() => setIsDeleteDeviceModalOpen(true)}>
-            Delete
+          <StyledContextMenuButton color="danger" onClick={() => setIsDeleteDeviceModalOpen(true)}>
+            <ContextMenuText>
+              Delete
+            </ContextMenuText>
           </StyledContextMenuButton>
         </StyledContextMenu>
       )}
@@ -79,11 +83,11 @@ const TableCellComponent = ({ description, title, icon, id }: TableRowData) => {
         <StyledTableCellTitleContainer>
           <StyledTableCellTitle data-testid={title}>
             {icon}
-            <span>{title}</span>
+            <TableCellText>{title}</TableCellText>
           </StyledTableCellTitle>
           <CellActionButton title={title} id={id} />
         </StyledTableCellTitleContainer>
-        <StyledTableCellDescription>{description}</StyledTableCellDescription>
+        <TableCellDescriptionText>{description}</TableCellDescriptionText>
       </StyledTableCell>
     </StyledTableRow>
   );
@@ -94,7 +98,11 @@ const TableComponent = ({ headerTitle, tableData }: TableProps) => {
     <StyledTable>
       <thead>
         <tr>
-          <StyledTableHeader>{headerTitle}</StyledTableHeader>
+          <StyledTableHeader>
+            <TableHeaderText>
+              {headerTitle}
+            </TableHeaderText>
+          </StyledTableHeader>
         </tr>
       </thead>
       <tbody>

@@ -21,7 +21,7 @@ export const StyledTableCell = styled.td`
     border-bottom: 1px solid #E7E8EB;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: ${({ theme }) => theme.spacing.small};
     padding: 12px 9px;
 `;
 
@@ -34,30 +34,13 @@ export const StyledTableCellTitleContainer = styled.div`
 export const StyledTableCellTitle = styled.div`
     align-items: center;
     display: flex;
-    gap: 4px;
+    gap: ${({ theme }) => theme.spacing.small};
     justify-content: space-between;
-
-    & > span {
-        font-family: Inter;
-        font-size: 14px;
-        font-weight: 500;
-        line-height: 16.94px;
-        text-align: left;
-    }
-`;
-
-export const StyledTableCellDescription = styled.div`
-    font-family: Inter;
-    font-size: 12px;
-    font-weight: 400;
-    line-height: 14.52px;
-    text-align: left;
-    color: #6E6D7A;
 `;
 
 export const StyledContextMenu = styled.div`
     box-shadow: 0px 2px 4px 0px rgba(33, 31, 51, 0.15);
-    padding: 4px;
+    padding: ${({ theme }) => theme.spacing.small};
     position: absolute;
     right: 0;
     width: 120px;
@@ -65,7 +48,7 @@ export const StyledContextMenu = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    background: #FFFFFF;
+    background: ${({ theme }) => theme.colors.background};
 
     button {
         height: 30px;
@@ -82,7 +65,7 @@ export const StyledContextMenuButton = styled.button`
     background: none;
     border: none;
     cursor: pointer;
-    color: ${(props) => (props.color === 'red' ? '#FF0000' : '#000000')};
+    color: ${({ color, theme }) => (color === 'danger' ? theme.colors.danger : theme.colors.textPrimary )};
 `;
 
 export const StyledActionContainer = styled.div`

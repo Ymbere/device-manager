@@ -7,7 +7,7 @@ export const DevicesFilterContainer = styled.div`
 
 export const StyledFilters = styled.div`
 display: flex;
-gap: 8px;
+gap: ${({ theme }) => theme.spacing.medium};
 `
 
 export const StyledReloadIcon = styled.div`

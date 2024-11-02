@@ -2,8 +2,10 @@ import React, {act} from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from 'styled-components';
 
 import Table from "../index";
+import { theme } from '../../../styles/theme';
 
 const baseProps = {
   headerTitle: 'Test devices',
@@ -17,23 +19,25 @@ const baseProps = {
 
 const queryClient = new QueryClient();
 
-const renderWithQueryClient = (ui: React.ReactElement) => {
+const renderWithProviders = (ui: React.ReactElement) => {
   return render(
     <QueryClientProvider client={queryClient}>
-      {ui}
+      <ThemeProvider theme={theme}>
+        {ui}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 };
 
 describe('Table Component', () => {
   it('should render the table without crashing', () => {
-    renderWithQueryClient(<Table {...baseProps} />);
+    renderWithProviders(<Table {...baseProps} />);
     const tableHeader = screen.getByText(baseProps.headerTitle);
     expect(tableHeader).toBeVisible();
   });
 
   it('should be able to see elements on the table', () => {
-    renderWithQueryClient(<Table {...baseProps} />);
+    renderWithProviders(<Table {...baseProps} />);
     const tableHeader = screen.getByText(baseProps.headerTitle);
     expect(tableHeader).toBeVisible();
 
@@ -45,7 +49,7 @@ describe('Table Component', () => {
     const user = userEvent.setup();
     const mockClickAction = jest.fn();
 
-    renderWithQueryClient(<Table {...baseProps} />);
+    renderWithProviders(<Table {...baseProps} />);
     const tableHeader = screen.getByText(baseProps.headerTitle);
     expect(tableHeader).toBeVisible();
 

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { BaseContainer } from '../../../styles/common';
+import { theme } from '../../../styles/theme';
 
 export const StyledDropdownWrapper = styled.div`
   position: relative;
@@ -9,7 +10,7 @@ export const StyledDropdownHeader = styled(BaseContainer)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: ${theme.spacing.large};
   cursor: pointer;
 `;
 
@@ -19,19 +20,10 @@ export const StyledDropdownList = styled.ul`
   margin: 0;
   padding: 0;
   list-style-type: none;
-  border: 1px solid rgba(209, 208, 217, 1);
+  border: 1px solid ${({ theme }) => theme.colors.border};
   box-sizing: border-box;
-  background-color: #fff;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
-
-export const StyledDropdownPlaceHolder = styled.span`
-font-family: Inter;
-font-size: 14px;
-font-weight: 400;
-line-height: 16px;
-text-align: left;
-color: #6E6D7A;
-`
 
 export const StyledDropdownListItem = styled.li`
   display: flex;

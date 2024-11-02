@@ -11,7 +11,16 @@ export const StyledTextBoxInput = styled.input<{ $hasIcon: boolean }>`
     border: none;
     padding: 0;
     box-sizing: border-box;
-    margin-left: ${props => props.$hasIcon ? '8px' : '0'};
+    margin-left: ${props => props.$hasIcon ? props.theme.spacing.medium : '0'};
+
+    &::placeholder {
+        font-family: ${({ theme }) => theme.fonts.primary};
+        font-size: ${({ theme }) => theme.fontSizes.medium};
+        font-weight: ${({ theme }) => theme.fontWeights.regular};
+        line-height: ${({ theme }) => theme.lineHeights.large};
+        text-align: left;
+        color: ${({ theme }) => theme.colors.textTertiary};
+    }
 
     :focus {
         outline: none;

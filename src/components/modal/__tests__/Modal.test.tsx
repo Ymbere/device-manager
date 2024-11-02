@@ -1,7 +1,9 @@
 import React, {act} from 'react';
 import {render, screen, waitFor} from '@testing-library/react';
-import userEvent from '@testing-library/user-event'
+import userEvent from '@testing-library/user-event';
+import { ThemeProvider } from 'styled-components';
 import Modal from "../index";
+import { theme } from '../../../styles/theme';
 
 const baseProps = {
   modalTitle: 'My test modal',
@@ -13,9 +15,11 @@ const baseProps = {
 describe('Modal Component', () => {
   it('should render the modal without crashing', () => {
     render(
-      <Modal {...baseProps}>
-        <div>Modal Children</div>
-      </Modal>
+      <ThemeProvider theme={theme}>
+        <Modal {...baseProps}>
+          <div>Modal Children</div>
+        </Modal>
+      </ThemeProvider>
     );
 
     const modalChildren = screen.getByText('Modal Children');
@@ -27,9 +31,11 @@ describe('Modal Component', () => {
     baseProps.onClose = jest.fn();
 
     render(
-      <Modal {...baseProps}>
-        <div>Modal Children</div>
-      </Modal>
+      <ThemeProvider theme={theme}>
+        <Modal {...baseProps}>
+          <div>Modal Children</div>
+        </Modal>
+      </ThemeProvider>
     );
 
     const modalChildren = screen.getByText('Modal Children');

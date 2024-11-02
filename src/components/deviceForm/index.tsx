@@ -3,6 +3,7 @@ import Dropdown from '../dropdown';
 import Input from '../TextInput';
 import { DEVICE_TYPES } from '../../consts';
 import { StyledForm, StyledFormGroup } from './styles';
+import { FormLabelText } from '../../styles/common';
 
 interface DeviceFormProps {
   formState: {
@@ -18,7 +19,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
   return (
     <StyledForm>
       <StyledFormGroup>
-        <label htmlFor="system_name">System name* </label>
+        <FormLabelText htmlFor="system_name">System name* </FormLabelText>
         <Input
           type="text"
           id="system_name"
@@ -29,7 +30,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
         />
       </StyledFormGroup>
       <StyledFormGroup>
-        <label>Device type* </label>
+        <FormLabelText>Device type* </FormLabelText>
         <Dropdown
           dropdownOptions={[
             { value: DEVICE_TYPES.MAC, text: 'Mac Os' },
@@ -42,7 +43,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
         />
       </StyledFormGroup>
       <StyledFormGroup>
-        <label htmlFor="hdd_capacity">HDD Capacity (GB)* </label>
+        <FormLabelText htmlFor="hdd_capacity">HDD Capacity (GB)* </FormLabelText>
         <Input
           type="text"
           id="hdd_capacity"

@@ -6,14 +6,14 @@ export const StyledOverlay = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: ${({ theme }) => theme.colors.overlay};
     z-index: 1;
 `;
 
 export const StyledModalContainer = styled.div`
-    padding: 24px;
+    padding: ${({ theme }) => theme.spacing.xlarge};
     background: white;
-    border-radius: 4px;
+    border-radius: ${({ theme }) => theme.borderRadius};
     max-width: 540px;
     max-height: 80vh;
     overflow-y: auto;
@@ -28,19 +28,13 @@ export const StyledModalContainer = styled.div`
 export const StyledModalHeader = styled.div`
   display: flex;
   justify-content: space-between;
-  margin-bottom: 24px;
-  & > span:first-of-type {
-    font-size: 24px;
-    font-weight: 500;
-    line-height: 29.05px;
-    text-align: left;
-  }
+  margin-bottom: ${({ theme }) => theme.spacing.xlarge};
 `;
 
 export const StyledModalFooter = styled.div`
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
+    gap: ${({ theme }) => theme.spacing.medium};
 `;
 
 export const StyledModalContent = styled.div`

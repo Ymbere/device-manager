@@ -1,7 +1,9 @@
 import React, { act } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { ThemeProvider } from 'styled-components';
 import Dropdown, { DropdownItem } from '../index';
+import { theme } from '../../../styles/theme';
 
 const baseProps = {
   dropdownOptions: [
@@ -17,14 +19,22 @@ const baseProps = {
 
 describe('Dropdown Component', () => {
   it('should render the dropdown without crashing', () => {
-    render(<Dropdown {...baseProps} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Dropdown {...baseProps} />
+      </ThemeProvider>
+    );
     const placeholder = screen.getByText(baseProps.infoLabel);
     expect(placeholder).toBeInTheDocument();
   });
 
   it('should be able to select a value on the simple dropdown', async () => {
     const user = userEvent.setup();
-    render(<Dropdown {...baseProps} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Dropdown {...baseProps} />
+      </ThemeProvider>
+    );
     const placeholderDiv = screen.getByTestId('dropdown-container');
 
     act(() => {
@@ -51,7 +61,11 @@ describe('Dropdown Component', () => {
   it('should be able to select a value on multiple dropdown', async () => {
     baseProps.multiple = true;
     const user = userEvent.setup();
-    render(<Dropdown {...baseProps} />);
+    render(
+      <ThemeProvider theme={theme}>
+        <Dropdown {...baseProps} />
+      </ThemeProvider>
+    );
     const placeholderDiv = screen.getByTestId('dropdown-container');
 
     act(() => {
@@ -87,7 +101,11 @@ describe('Dropdown Component', () => {
         }
       };
 
-      return <Dropdown {...baseProps} selectedValues={selectedValues} onChange={handleChangeSelectedValues} />;
+      return (
+        <ThemeProvider theme={theme}>
+          <Dropdown {...baseProps} selectedValues={selectedValues} onChange={handleChangeSelectedValues} />
+        </ThemeProvider>
+      );
     };
 
     const testCallBack = jest.fn();

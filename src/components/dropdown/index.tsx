@@ -1,7 +1,8 @@
 import React from 'react';
-import { StyledDropdownWrapper, StyledDropdownHeader, StyledDropdownList, StyledDropdownListItem, StyledDropdownPlaceHolder } from './styles';
+import { StyledDropdownWrapper, StyledDropdownHeader, StyledDropdownList, StyledDropdownListItem } from './styles';
 import { ArrowDownIcon } from '../../assets/svgs';
 import useClickOutside from '../../hooks/useClickOutside';
+import { DropdownPlaceholderText, PlaceholderText } from '../../styles/common';
 
 export interface DropdownItem {
   value: string;
@@ -31,14 +32,14 @@ const DropdownPlaceholder = ({ infoLabel, placeholder, selectedValues, dropdownO
     .join(', ');
 
   if (infoLabel) {
-    return <span>{infoLabel} {placeholderDetail}</span>;
+    return <DropdownPlaceholderText>{infoLabel} {placeholderDetail}</DropdownPlaceholderText>;
   }
 
   if (placeholder && !placeholderDetail) {
-    return <StyledDropdownPlaceHolder>{placeholder}</StyledDropdownPlaceHolder>;
+    return <PlaceholderText>{placeholder}</PlaceholderText>;
   }
 
-  return <span>{placeholderDetail}</span>;
+  return <DropdownPlaceholderText>{placeholderDetail}</DropdownPlaceholderText>;
 };
 
 const SimpleDropdown = ({ placeholder, dropdownOptions, selectedValues, onChange, infoLabel }: DropdownProps) => {

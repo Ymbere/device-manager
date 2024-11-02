@@ -8,14 +8,14 @@ interface ModalProps {
   children: React.ReactNode;
   onClose: () => void;
   actions: React.ReactNode;
-  modalTitle: string;
+  modalTitle: string | React.ReactNode;
 }
 
 interface ModalWrapperProps {
   children: React.ReactNode;
   onClose: () => void;
   actions: React.ReactNode;
-  title: string;
+  title: string | React.ReactNode;
 }
 
 const ModalWrapper = ({ children, onClose, actions, title }: ModalWrapperProps) => {

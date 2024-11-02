@@ -2,25 +2,29 @@ import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import TextInput from "../index";
-
+import { ThemeProvider } from 'styled-components';
+import { theme } from '../../../styles/theme';
 
 const baseProps = {
   placeholder: 'Test placeholder search input',
   onChange: () => {},
 }
 
+const renderWithTheme = (component: React.ReactNode) => {
+  return render(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+}
+
 test('Should render the search input without crashing', () => {
-  render(<TextInput {...baseProps} />);
+  renderWithTheme(<TextInput {...baseProps} />);
   const placeholder = screen.getByPlaceholderText(baseProps.placeholder);
   expect(placeholder).toBeVisible();
 });
-
 
 test('Should trigger onChange when typing', async () => {
   const user = userEvent.setup();
   baseProps.onChange = jest.fn();
 
-  render(<TextInput {...baseProps} />);
+  renderWithTheme(<TextInput {...baseProps} />);
   const inputSearch = screen.getByPlaceholderText(baseProps.placeholder);
   expect(inputSearch).toBeVisible();
 
@@ -41,7 +45,7 @@ test('Should trigger onChange when typing', async () => {
 test('Should have value provided for controlled behaviour', () => {
   // @ts-ignore
   baseProps.value = 'Test controlled';
-  render(<TextInput {...baseProps} />);
+  renderWithTheme(<TextInput {...baseProps} />);
 
   const inputSearch = screen.getByPlaceholderText(baseProps.placeholder);
   expect(inputSearch).toBeVisible();

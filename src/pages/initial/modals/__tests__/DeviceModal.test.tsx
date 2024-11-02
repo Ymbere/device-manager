@@ -2,16 +2,20 @@ import React, { act } from 'react';
 import userEvent from '@testing-library/user-event';
 import { render, screen, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ThemeProvider } from 'styled-components';
 import DeviceModal from '../DeviceModal';
+import { theme } from '../../../../styles/theme';
 
 describe('DeviceModal', () => {
     const onCloseMock = jest.fn();
     const queryClient = new QueryClient();
 
-    const renderWithQueryClient = (ui: React.ReactNode) => {
+    const renderWithProviders = (ui: React.ReactNode) => {
         return render(
             <QueryClientProvider client={queryClient}>
-                {ui}
+                <ThemeProvider theme={theme}>
+                    {ui}
+                </ThemeProvider>
             </QueryClientProvider>
         );
     };
@@ -33,7 +37,7 @@ describe('DeviceModal', () => {
     });
 
     it('renders correctly when creating a device', async () => {
-        renderWithQueryClient(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
+        renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
         
         await waitFor(() => {
             expect(screen.getByText('Create device')).toBeInTheDocument();
@@ -44,7 +48,7 @@ describe('DeviceModal', () => {
     });
 
     it('renders correctly when editing a device', () => {
-        renderWithQueryClient(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
+        renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
         
         expect(screen.getByText('Edit device')).toBeInTheDocument();
         expect(screen.getByText('Cancel')).toBeInTheDocument();
@@ -53,7 +57,7 @@ describe('DeviceModal', () => {
 
     it('calls onClose when Cancel button is clicked', async () => {
         const user = userEvent.setup();
-        renderWithQueryClient(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
+        renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
         
         await act(async () => {
             await user.click(screen.getByText('Cancel'));
@@ -67,7 +71,7 @@ describe('DeviceModal', () => {
     it('calls handleSubmit and onClose when Submit button is clicked and submission is successful', async () => {
         const user = userEvent.setup();
 
-        renderWithQueryClient(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
+        renderWithProviders(<DeviceModal isOpen={true} deviceId="1" onClose={onCloseMock} />);
 
         await waitFor(() => {
             expect(screen.getByText('Edit device')).toBeVisible();
@@ -92,7 +96,7 @@ describe('DeviceModal', () => {
         window.alert = jest.fn();
         const user = userEvent.setup();
 
-        renderWithQueryClient(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
+        renderWithProviders(<DeviceModal isOpen={true} deviceId={null} onClose={onCloseMock} />);
         
         await act(async () => {
             await user.click(screen.getByText('Submit'));

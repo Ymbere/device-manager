@@ -2,6 +2,7 @@ import Modal from '../../../components/modal';
 import Button from '../../../components/button';
 import DeviceForm from '../../../components/deviceForm';
 import { useDeviceForm } from '../../../hooks/useDeviceForm';
+import { ModalButtonText, ModalHeaderText } from '../../../styles/common';
 
 interface DeviceModalProps {
     isOpen: boolean;
@@ -28,18 +29,18 @@ const DeviceModal = ({ isOpen, deviceId, onClose }: DeviceModalProps) => {
 
     return (
         <Modal
-            modalTitle={deviceId ? 'Edit device' : 'Create device'}
+            modalTitle={deviceId ? <ModalHeaderText>Edit device</ModalHeaderText> : <ModalHeaderText> Create device</ModalHeaderText>}
             isOpen={isOpen}
             onClose={onClose}
             actions={(
                 <>
                     <Button
-                        buttonLabel="Cancel"
+                        buttonLabel={(<ModalButtonText>Cancel</ModalButtonText>)}
                         onClick={onClose}
                         buttonType='secondary'
                     />
                     <Button
-                        buttonLabel="Submit"
+                        buttonLabel={(<ModalButtonText>Submit</ModalButtonText>)}
                         onClick={handleFormSubmit}
                         buttonType='primary'
                     />

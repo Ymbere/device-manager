@@ -1,21 +1,18 @@
-import { StyledButton } from './styles';
+import { Button } from '../../styles/common';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  buttonLabel: string;
+  buttonLabel: string | React.ReactNode;
   iconLeft?: React.ReactNode;
   buttonType: 'primary' | 'secondary' | 'danger' | 'accessory';
 }
 
-const Button = ({ buttonLabel, buttonType, onClick, iconLeft }: ButtonProps) => {
+const ButtonComponent = ({ buttonLabel, buttonType, onClick, iconLeft }: ButtonProps) => {
   return (
-      <StyledButton
-          onClick={onClick}
-          $buttonType={buttonType}
-      >
-        {iconLeft}
-        {buttonLabel}
-      </StyledButton>
-  )
+    <Button onClick={onClick} buttonType={buttonType}>
+      {iconLeft}
+      {buttonLabel}
+    </Button>
+  );
 }
 
-export default Button;
+export default ButtonComponent;
