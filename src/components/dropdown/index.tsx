@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyledDropdownWrapper, StyledDropdownHeader, StyledDropdownList, StyledDropdownListItem } from './styles';
+import { StyledDropdownWrapper, StyledDropdownHeader, StyledDropdownList, StyledDropdownListItem, StyledDropdownPlaceHolder } from './styles';
 import { ArrowDownIcon } from '../../assets/svgs';
 import useClickOutside from '../../hooks/useClickOutside';
 
@@ -35,7 +35,7 @@ const DropdownPlaceholder = ({ infoLabel, placeholder, selectedValues, dropdownO
   }
 
   if (placeholder && !placeholderDetail) {
-    return <span>{placeholder}</span>;
+    return <StyledDropdownPlaceHolder>{placeholder}</StyledDropdownPlaceHolder>;
   }
 
   return <span>{placeholderDetail}</span>;

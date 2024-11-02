@@ -24,6 +24,15 @@ export const StyledDropdownList = styled.ul`
   background-color: #fff;
 `;
 
+export const StyledDropdownPlaceHolder = styled.span`
+font-family: Inter;
+font-size: 14px;
+font-weight: 400;
+line-height: 16px;
+text-align: left;
+color: #6E6D7A;
+`
+
 export const StyledDropdownListItem = styled.li`
   display: flex;
   align-items: center;
