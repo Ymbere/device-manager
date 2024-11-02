@@ -4,12 +4,14 @@ import { ThemeProvider } from 'styled-components';
 import NinjaHeader from '../index';
 import { theme } from '../../../styles/theme';
 
-test('renders NinjaHeader component', () => {
+describe('NinjaHeader component', () => {
+  it('should render NinjaHeader component', () => {
     render(
-        <ThemeProvider theme={theme}>
-            <NinjaHeader />
-        </ThemeProvider>
+      <ThemeProvider theme={theme}>
+        <NinjaHeader />
+      </ThemeProvider>
     );
     const headerElement = screen.getByTestId('ninja-header');
     expect(headerElement).toBeInTheDocument();
+  });
 });
