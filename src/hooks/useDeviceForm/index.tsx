@@ -58,6 +58,7 @@ export const useDeviceForm = (deviceId?: string | null) => {
       } else {
         await createDevice(formState);
       }
+      setFormState(initialFormState);
       return { status: 'success' };
     } catch (error: any) {
       return { status: 'error', message: error.message };
