@@ -97,7 +97,7 @@ describe('Dropdown Component', () => {
       const handleChangeSelectedValues = (values: DropdownItem | Array<DropdownItem>) => {
         if (Array.isArray(values)) {
           testCallBack(values);
-          setSelectedValues(values.map(v => v.value));
+          setSelectedValues(values.map((v) => v.value));
         }
       };
 
@@ -145,7 +145,9 @@ describe('Dropdown Component', () => {
       expect(testCallBack.mock.calls[1][0]).toEqual([baseProps.dropdownOptions[0], baseProps.dropdownOptions[1]]);
     });
 
-    const placeholder = screen.getByText(`${baseProps.infoLabel} ${baseProps.dropdownOptions[0].text}, ${baseProps.dropdownOptions[1].text}`);
+    const placeholder = screen.getByText(
+      `${baseProps.infoLabel} ${baseProps.dropdownOptions[0].text}, ${baseProps.dropdownOptions[1].text}`
+    );
     expect(placeholder).toBeVisible();
 
     act(() => {

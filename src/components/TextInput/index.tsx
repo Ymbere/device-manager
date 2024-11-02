@@ -13,11 +13,7 @@ const TextInput = ({ icon, width, ...props }: TextInputProps) => {
   return (
     <StyledTextBoxContainer width={width}>
       {icon}
-      <StyledTextBoxInput
-        data-testid='searchbox-input'
-        $hasIcon={hasIcon}
-        {...props}
-      />
+      <StyledTextBoxInput data-testid="searchbox-input" $hasIcon={hasIcon} {...props} />
     </StyledTextBoxContainer>
   );
 };

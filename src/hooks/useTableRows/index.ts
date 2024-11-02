@@ -1,11 +1,11 @@
-import { useMemo } from 'react';
+import React from 'react';
 import { capitalizeFirstLatter } from '../../utils/wordFormatter';
 import { getIconBasedOnSystem } from '../../utils/iconUtils';
 import { Device } from '../useDevices';
 import { TableRowData } from '../../components/table';
 
-export const useTableRows = (devices: Device[]): TableRowData[]  => {
-  return useMemo(() => {
+export const useTableRows = (devices: Device[]): TableRowData[] => {
+  return React.useMemo(() => {
     return devices.map((device) => ({
       id: device.id,
       title: device.system_name,

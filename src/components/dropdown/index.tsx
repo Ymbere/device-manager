@@ -27,12 +27,16 @@ interface DropdownPlaceholderProps {
 
 const DropdownPlaceholder = ({ infoLabel, placeholder, selectedValues, dropdownOptions }: DropdownPlaceholderProps) => {
   const placeholderDetail = selectedValues
-    .map(selectedValue => dropdownOptions.find(dropdownOption => dropdownOption.value === selectedValue)?.text)
+    .map((selectedValue) => dropdownOptions.find((dropdownOption) => dropdownOption.value === selectedValue)?.text)
     .filter(Boolean)
     .join(', ');
 
   if (infoLabel) {
-    return <DropdownPlaceholderText>{infoLabel} {placeholderDetail}</DropdownPlaceholderText>;
+    return (
+      <DropdownPlaceholderText>
+        {infoLabel} {placeholderDetail}
+      </DropdownPlaceholderText>
+    );
   }
 
   if (placeholder && !placeholderDetail) {
@@ -51,13 +55,24 @@ const SimpleDropdown = ({ placeholder, dropdownOptions, selectedValues, onChange
   return (
     <StyledDropdownWrapper ref={dropdownRef}>
       <StyledDropdownHeader onClick={() => setIsOpen(!isOpen)} data-testid="dropdown-container">
-        <DropdownPlaceholder infoLabel={infoLabel} placeholder={placeholder} selectedValues={selectedValues} dropdownOptions={dropdownOptions} />
+        <DropdownPlaceholder
+          infoLabel={infoLabel}
+          placeholder={placeholder}
+          selectedValues={selectedValues}
+          dropdownOptions={dropdownOptions}
+        />
         <ArrowDownIcon />
       </StyledDropdownHeader>
       {isOpen && (
         <StyledDropdownList>
-          {dropdownOptions.map(dropdownOption => (
-            <StyledDropdownListItem key={dropdownOption.value} onClick={() => { onChange(dropdownOption); setIsOpen(false); }}>
+          {dropdownOptions.map((dropdownOption) => (
+            <StyledDropdownListItem
+              key={dropdownOption.value}
+              onClick={() => {
+                onChange(dropdownOption);
+                setIsOpen(false);
+              }}
+            >
               {dropdownOption.text}
             </StyledDropdownListItem>
           ))}
@@ -76,28 +91,35 @@ const MultipleDropdown = ({ placeholder, dropdownOptions, selectedValues, onChan
   const handleClick = (event: React.MouseEvent<HTMLInputElement>, dropdownItem: DropdownItem) => {
     const newSelectedValues = event.currentTarget.checked
       ? [...selectedValues, dropdownItem.value]
-      : selectedValues.filter(value => value !== dropdownItem.value);
+      : selectedValues.filter((value) => value !== dropdownItem.value);
 
-    const updatedItems = newSelectedValues.map(selectedValue => dropdownOptions.find(dropdownOption => dropdownOption.value === selectedValue)).filter(Boolean) as DropdownItem[];
+    const updatedItems = newSelectedValues
+      .map((selectedValue) => dropdownOptions.find((dropdownOption) => dropdownOption.value === selectedValue))
+      .filter(Boolean) as DropdownItem[];
     onChange(updatedItems);
   };
 
   return (
     <StyledDropdownWrapper ref={dropdownRef}>
       <StyledDropdownHeader onClick={() => setIsOpen(!isOpen)} data-testid="dropdown-container">
-        <DropdownPlaceholder infoLabel={infoLabel} placeholder={placeholder} selectedValues={selectedValues} dropdownOptions={dropdownOptions} />
+        <DropdownPlaceholder
+          infoLabel={infoLabel}
+          placeholder={placeholder}
+          selectedValues={selectedValues}
+          dropdownOptions={dropdownOptions}
+        />
         <ArrowDownIcon />
       </StyledDropdownHeader>
       {isOpen && (
         <StyledDropdownList>
-          {dropdownOptions.map(dropdownItem => (
+          {dropdownOptions.map((dropdownItem) => (
             <StyledDropdownListItem key={dropdownItem.value}>
               <label>
                 <input
                   type="checkbox"
                   readOnly
                   checked={selectedValues.includes(dropdownItem.value)}
-                  onClick={event => handleClick(event, dropdownItem)}
+                  onClick={(event) => handleClick(event, dropdownItem)}
                 />
                 {dropdownItem.text}
               </label>
@@ -111,9 +133,21 @@ const MultipleDropdown = ({ placeholder, dropdownOptions, selectedValues, onChan
 
 const Dropdown = ({ dropdownOptions, placeholder, multiple, onChange, selectedValues, infoLabel }: DropdownProps) => {
   return multiple ? (
-    <MultipleDropdown dropdownOptions={dropdownOptions} placeholder={placeholder} onChange={onChange} selectedValues={selectedValues} infoLabel={infoLabel} />
+    <MultipleDropdown
+      dropdownOptions={dropdownOptions}
+      placeholder={placeholder}
+      onChange={onChange}
+      selectedValues={selectedValues}
+      infoLabel={infoLabel}
+    />
   ) : (
-    <SimpleDropdown dropdownOptions={dropdownOptions} placeholder={placeholder} onChange={onChange} selectedValues={selectedValues} infoLabel={infoLabel} />
+    <SimpleDropdown
+      dropdownOptions={dropdownOptions}
+      placeholder={placeholder}
+      onChange={onChange}
+      selectedValues={selectedValues}
+      infoLabel={infoLabel}
+    />
   );
 };
 

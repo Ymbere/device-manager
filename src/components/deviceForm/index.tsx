@@ -35,7 +35,7 @@ const DeviceForm = ({ formState, handleChange, handleDropdownChange }: DeviceFor
           dropdownOptions={[
             { value: DEVICE_TYPES.MAC, text: 'Mac Os' },
             { value: DEVICE_TYPES.WINDOWS, text: 'Windows' },
-            { value: DEVICE_TYPES.LINUX, text: 'Linux' }
+            { value: DEVICE_TYPES.LINUX, text: 'Linux' },
           ]}
           placeholder="Select device type"
           selectedValues={[formState.type]}

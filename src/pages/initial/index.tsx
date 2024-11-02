@@ -6,21 +6,18 @@ import styled from 'styled-components';
 
 const StyledPage = styled.div`
   padding: 24px 24px 0 24px;
-`
+`;
 
 const InitialPage = () => {
-
   return (
     <StyledPage>
-
       <DevicesHeader />
 
       <DeviceFilters />
 
       <DeviceTable />
-
     </StyledPage>
-  )
-}
+  );
+};
 
 export default InitialPage;

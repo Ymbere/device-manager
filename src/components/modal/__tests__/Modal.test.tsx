@@ -1,8 +1,8 @@
-import React, {act} from 'react';
-import {render, screen, waitFor} from '@testing-library/react';
+import React, { act } from 'react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { ThemeProvider } from 'styled-components';
-import Modal from "../index";
+import Modal from '../index';
 import { theme } from '../../../styles/theme';
 
 const baseProps = {
@@ -10,7 +10,7 @@ const baseProps = {
   onClose: () => {},
   actions: <>test</>,
   isOpen: true,
-}
+};
 
 describe('Modal Component', () => {
   it('should render the modal without crashing', () => {
@@ -52,4 +52,3 @@ describe('Modal Component', () => {
     });
   });
 });
-

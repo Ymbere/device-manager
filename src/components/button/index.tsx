@@ -13,6 +13,6 @@ const ButtonComponent = ({ buttonLabel, buttonType, onClick, iconLeft }: ButtonP
       {buttonLabel}
     </Button>
   );
-}
+};
 
 export default ButtonComponent;
