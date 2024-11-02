@@ -1,7 +1,13 @@
 import React from 'react';
 import { createPortal } from 'react-dom';
-import { CloseIcon } from "../../assets/svgs";
-import { StyledModalContainer, StyledModalContent, StyledModalFooter, StyledModalHeader, StyledOverlay } from './styles';
+import { CloseIcon } from '../../assets/svgs';
+import {
+  StyledModalContainer,
+  StyledModalContent,
+  StyledModalFooter,
+  StyledModalHeader,
+  StyledOverlay,
+} from './styles';
 
 interface ModalProps {
   isOpen?: boolean;
@@ -31,12 +37,8 @@ const ModalWrapper = ({ children, onClose, actions, title }: ModalWrapperProps) 
           <span>{title}</span>
           <CloseIcon style={{ cursor: 'pointer' }} data-testid="close-modal-button" onClick={onClose} />
         </StyledModalHeader>
-        <StyledModalContent>
-          {children}
-        </StyledModalContent>
-        <StyledModalFooter>
-          {actions}
-        </StyledModalFooter>
+        <StyledModalContent>{children}</StyledModalContent>
+        <StyledModalFooter>{actions}</StyledModalFooter>
       </StyledModalContainer>
     </>
   );
@@ -45,12 +47,13 @@ const ModalWrapper = ({ children, onClose, actions, title }: ModalWrapperProps) 
 const Modal = ({ onClose, actions, isOpen, children, modalTitle }: ModalProps) => {
   return (
     <>
-      {isOpen && createPortal(
-        <ModalWrapper onClose={onClose} actions={actions} title={modalTitle}>
-          {children}
-        </ModalWrapper>,
-        document.body
-      )}
+      {isOpen &&
+        createPortal(
+          <ModalWrapper onClose={onClose} actions={actions} title={modalTitle}>
+            {children}
+          </ModalWrapper>,
+          document.body
+        )}
     </>
   );
 };
